@@ -78,7 +78,7 @@ export default class CognitoAuthScheme {
     await this.$auth.reset();
 
     const result = await this._login(data.username, data.password);
-    const idToken = result.getIdToken().getJwtToken();
+    const idToken = result.getAccessToken().getJwtToken();
     const token = this.options.tokenType
       ? this.options.tokenType + " " + idToken
       : idToken;
