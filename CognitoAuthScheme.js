@@ -24,6 +24,7 @@ export default class CognitoAuthScheme {
   }
 
   _setToken(token) {
+
     if (this.options.globalToken) {
       this.$auth.ctx.app.$axios.setHeader(this.options.tokenName, token);
     }
@@ -46,13 +47,15 @@ export default class CognitoAuthScheme {
               if (err) {
                 return reject(err);
               }
-              return resolve(cognitoUserSession.getIdToken().getJwtToken());
+              return resolve(cognitoUserSession.getAccessToken().getJwtToken());
             });
           });
         } catch (error) {}
       }
-
-      this._setToken(token);
+      const tokenToSet = this.options.tokenType
+      ? this.options.tokenType + " " + token
+      : token;
+      this._setToken(tokenToSet);
     }
 
     return this.$auth.fetchUserOnce();
